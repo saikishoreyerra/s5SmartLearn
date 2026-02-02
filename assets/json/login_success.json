@@ -1,0 +1,28 @@
+{
+  "res": {
+    "unm": "priya",
+    "user_id": 194,
+    "role_id": 18,
+    "emp_id": null,
+    "utype": "Student",
+    "ust": "Active",
+    "stu_id": "255",
+    "roles": "HD,VAAI",
+    "role_name": "STUDENT",
+    "role_code": "STUDENT",
+    "fnm": "Priya",
+    "lnm": "Kapoor",
+    "mnm": "",
+    "email": "priya.kapoor@studentmail.in",
+    "father_nm": "Sunil Kapoor",
+    "dob": "2011-01-03 00:00:00.000",
+    "add": "45 Park Stree",
+    "bgrp": "B+",
+    "ins_name": "Delhi Public School-HYD",
+    "comp_id": 22
+  },
+  "suc": true,
+  "err": null,
+  "status": 200,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOTQsInVzZXJfbmFtZSI6InByaXlhIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3Njg5Nzk3NjgsImV4cCI6MTc2ODk4MzM2OH0.qRfugJCKNvJKuszh5HsEtmU6JvFuMXSa7ibvgiH_c6Y"
+}
