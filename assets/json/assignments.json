@@ -1,0 +1,76 @@
+{
+  "exams": [
+    {
+      "id": "1",
+      "title": "Mathematics06 / Maths-Descriptive02Exam",
+      "subtitle": null,
+      "status": "ongoing",
+      "endDate": "2026-02-25T00:02:00.000",
+      "reviewType": "MANNUAL",
+      "marks": null,
+      "typeTag": "Descriptive"
+    },
+    {
+      "id": "2",
+      "title": "Science Unit Test",
+      "subtitle": "Chapter 5–7",
+      "status": "ongoing",
+      "endDate": "2026-02-06T23:59:00.000",
+      "reviewType": "AUTO",
+      "marks": "--",
+      "typeTag": "MCQ"
+    },
+    {
+      "id": "3",
+      "title": "English Essay",
+      "subtitle": null,
+      "status": "completed",
+      "endDate": "2026-02-01T23:59:00.000",
+      "reviewType": "MANNUAL",
+      "marks": "85/100",
+      "typeTag": "Descriptive",
+      "answers": [
+        {
+          "question": "What is the main theme of the passage?",
+          "options": ["Adventure", "Friendship", "Loss and memory", "Science"],
+          "correctAnsIndex": 2,
+          "userSelectedIndex": 2
+        },
+        {
+          "question": "Choose the correct synonym for 'benevolent'.",
+          "options": ["Cruel", "Kind", "Strict", "Silent"],
+          "correctAnsIndex": 1,
+          "userSelectedIndex": 1
+        },
+        {
+          "question": "What is the tone of the author in the third paragraph?",
+          "options": ["Humorous", "Nostalgic", "Angry", "Indifferent"],
+          "correctAnsIndex": 1,
+          "userSelectedIndex": 0
+        },
+        {
+          "question": "Identify the literary device used in: 'Time is a thief'.",
+          "options": ["Simile", "Metaphor", "Personification", "Hyperbole"],
+          "correctAnsIndex": 1,
+          "userSelectedIndex": 1
+        },
+        {
+          "question": "The conclusion of the essay suggests that ___.",
+          "options": ["the past is irrelevant", "memories shape our identity", "one should forget quickly", "change is unnecessary"],
+          "correctAnsIndex": 1,
+          "userSelectedIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "History Assignment",
+      "subtitle": null,
+      "status": "unattended",
+      "endDate": "2026-02-02T23:59:00.000",
+      "reviewType": "MANNUAL",
+      "marks": "--",
+      "typeTag": "Descriptive"
+    }
+  ]
+}
