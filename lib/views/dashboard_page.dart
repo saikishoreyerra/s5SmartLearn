@@ -5,6 +5,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/user.dart';
 import 'attendance_page.dart';
 import 'profile_page.dart';
+import 'quiz/quiz_screen.dart';
+import 'assignments_page.dart';
 
 class DashboardPage extends StatelessWidget {
   final User user;
@@ -52,6 +54,18 @@ class DashboardPage extends StatelessWidget {
                       onTap = () => Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => AttendancePage(initialTab: 0),
+                            ),
+                          );
+                    } else if (index == 2) {
+                      onTap = () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const QuizScreen(),
+                            ),
+                          );
+                    } else if (index == 3) {
+                      onTap = () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const AssignmentsPage(),
                             ),
                           );
                     } else if (index == 4) {
