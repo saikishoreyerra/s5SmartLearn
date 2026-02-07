@@ -13,7 +13,7 @@ const Color kBackgroundLight = Color(0xFFF0F2F5);
 const Color kSurfaceLight = Color(0xFFE8EAED);
 
 const LinearGradient kPrimaryGradient = LinearGradient(
-  colors: [Color(0xFF08306D), Color(0xFF0D47A1)],
+  colors: [Color(0xFF08306D), Color(0xFF46D9BF)],
   begin: Alignment.centerLeft,
   end: Alignment.centerRight,
 );

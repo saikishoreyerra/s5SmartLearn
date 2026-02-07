@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../di/injection.dart';
+import '../../models/exam.dart';
 import '../../models/question.dart';
 import '../../viewmodels/quiz_viewmodel.dart';
 import 'quiz_constants.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  final String? examId; // null = default quiz
+
+  const QuizScreen({super.key, this.examId});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -18,6 +21,7 @@ class _QuizScreenState extends State<QuizScreen>
   late final PageController _pageController;
   late final AnimationController _animationController;
   bool _animationStarted = false;
+  List<int?> _userAnswers = [];
 
   @override
   void initState() {
@@ -41,6 +45,12 @@ class _QuizScreenState extends State<QuizScreen>
 
   void _onViewModelChanged() {
     if (!mounted) return;
+    // Initialize user answers list once questions are loaded
+    if (!_viewModel.isLoading &&
+        _viewModel.hasQuestions &&
+        _userAnswers.length != _viewModel.questions.length) {
+      _userAnswers = List<int?>.filled(_viewModel.questions.length, null);
+    }
     if (!_viewModel.isLoading &&
         _viewModel.hasQuestions &&
         !_animationStarted &&
@@ -52,11 +62,33 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   void _goToNext() {
-    _viewModel.nextQuestion();
-    if (_viewModel.isQuizComplete) {
-      Navigator.of(context).pop();
+    // If we are on the last question, finish the quiz and
+    // return to the previous screen (Assignments or Dashboard).
+    if (_viewModel.questions.isNotEmpty &&
+        _viewModel.questionNumber >= _viewModel.questions.length) {
+      // Build question-wise answers so Assignments can show them later.
+      final answers = List<ExamAnswer>.generate(
+        _viewModel.questions.length,
+        (index) {
+          final q = _viewModel.questions[index];
+          final selected = index < _userAnswers.length && _userAnswers[index] != null
+              ? _userAnswers[index]!
+              : -1;
+          return ExamAnswer(
+            question: q.question,
+            options: q.options,
+            correctAnsIndex: q.correctAnsIndex,
+            userSelectedIndex: selected,
+          );
+        },
+      );
+
+      // Return answers so caller can mark exam as completed with results.
+      Navigator.of(context).pop(answers);
       return;
     }
+
+    _viewModel.nextQuestion();
     _animationController.reset();
     _animationController.forward();
     _pageController.nextPage(
@@ -67,6 +99,11 @@ class _QuizScreenState extends State<QuizScreen>
 
   void _checkAns(Question question, int selectedIndex) {
     if (_viewModel.isAnswered) return;
+    // Store user's selected answer for the current question index
+    final qIndex = _viewModel.questionNumber - 1;
+    if (qIndex >= 0 && qIndex < _userAnswers.length) {
+      _userAnswers[qIndex] = selectedIndex;
+    }
     _viewModel.checkAns(question, selectedIndex);
     _animationController.stop();
     Future.delayed(const Duration(milliseconds: 1500), () {
@@ -95,8 +132,9 @@ class _QuizScreenState extends State<QuizScreen>
         ),
         actions: [
           TextButton(
-            onPressed:
-                _viewModel.isAnswered || !_viewModel.hasQuestions ? null : _goToNext,
+            onPressed: _viewModel.isAnswered || !_viewModel.hasQuestions
+                ? null
+                : _goToNext,
             child: const Text('Skip', style: TextStyle(color: Colors.white)),
           ),
         ],
@@ -220,15 +258,15 @@ class QuizBody extends StatelessWidget {
                 TextSpan(
                   text: 'Question $questionNumber',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: kSecondaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                   children: [
                     TextSpan(
                       text: '/${questions.length}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: kSecondaryColor,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(color: kSecondaryColor),
                     ),
                   ],
                 ),
@@ -288,7 +326,9 @@ class QuizProgressBar extends StatelessWidget {
               ),
               Positioned.fill(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultPadding / 2,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -299,7 +339,11 @@ class QuizProgressBar extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const Icon(Icons.timer_outlined, color: Colors.white, size: 22),
+                      const Icon(
+                        Icons.timer_outlined,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                     ],
                   ),
                 ),
@@ -343,9 +387,9 @@ class QuizQuestionCard extends StatelessWidget {
           Text(
             question.question,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: kBlackColor,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: kBlackColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: kDefaultPadding / 2),
           ...List.generate(

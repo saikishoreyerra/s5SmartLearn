@@ -5,9 +5,8 @@ import '../models/exam.dart';
 import '../viewmodels/assignments_viewmodel.dart';
 import 'exam_answers_page.dart';
 import 'quiz/quiz_constants.dart';
+import 'quiz/quiz_screen.dart';
 
-/// Assignments/Exams list with tabs: Active, Completed, Unattended, All.
-/// Data is fetched from JSON (simulated remote). Navigated from Dashboard.
 class AssignmentsPage extends StatefulWidget {
   const AssignmentsPage({super.key});
 
@@ -194,11 +193,14 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     );
   }
 
-  void _goToExam(Exam exam) {
-    // TODO: Navigate to actual exam screen when implemented
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Go to exam: ${exam.title}')));
+  Future<void> _goToExam(Exam exam) async {
+    final result = await Navigator.of(context).push<List<ExamAnswer>>(
+      MaterialPageRoute(builder: (_) => QuizScreen(examId: exam.id)),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      _viewModel.markExamCompleted(exam.id, answers: result);
+    }
   }
 
   void _viewAnswers(Exam exam) {

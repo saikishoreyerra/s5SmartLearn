@@ -60,4 +60,28 @@ class AssignmentsViewModel extends ChangeNotifier {
     _selectedTab = index;
     notifyListeners();
   }
+
+  /// Mark an exam as completed after the user finishes the quiz.
+  /// Optionally attach the user's answers so they can be viewed later.
+  void markExamCompleted(String examId, {List<ExamAnswer>? answers}) {
+    final index = _exams.indexWhere((e) => e.id == examId);
+    if (index == -1) return;
+
+    final current = _exams[index];
+    if (current.isCompleted) return;
+
+    _exams[index] = Exam(
+      id: current.id,
+      title: current.title,
+      subtitle: current.subtitle,
+      status: ExamStatus.completed,
+      endDate: current.endDate,
+      reviewType: current.reviewType,
+      marks: current.marks ?? '--',
+      typeTag: current.typeTag,
+      answers: answers ?? current.answers,
+    );
+
+    notifyListeners();
+  }
 }

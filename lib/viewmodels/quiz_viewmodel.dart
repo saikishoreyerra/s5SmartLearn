@@ -29,13 +29,13 @@ class QuizViewModel extends ChangeNotifier {
 
   bool get hasQuestions => _questions.isNotEmpty;
 
-  Future<void> loadQuestions() async {
+  Future<void> loadQuestions({String? examId}) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      _questions = await _quizRepository.getQuestions();
+      _questions = await _quizRepository.getQuestions(examId: examId);
       _isLoading = false;
       _errorMessage = null;
       _questionNumber = 1;
